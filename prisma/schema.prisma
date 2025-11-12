@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  rentals Rental[]
+}
+
+model VehicleType {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  vehicles    Vehicle[]
+}
+
+model Vehicle {
+  id            Int         @id @default(autoincrement())
+  name          String
+  vehicleTypeId Int
+  currentSiteId Int
+  rentals       Rental[]
+  currentSite   Site        @relation("VehicleLocation", fields: [currentSiteId], references: [id])
+  vehiceType    VehicleType @relation(fields: [vehicleTypeId], references: [id])
+}
+
+model Site {
+  id           Int       @id @default(autoincrement())
+  name         String
+  rentalsEnd   Rental[]  @relation("EndSite")
+  rentalsStart Rental[]  @relation("StartSite")
+  vehicles     Vehicle[] @relation("VehicleLocation")
+}
+
+model Rental {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  vehicleId   Int
+  startSiteId Int
+  endSiteId   Int?
+  startDate   DateTime
+  endDate     DateTime?
+  totalCost   Decimal?
+  createdAt   DateTime  @default(now())
+  completedAt DateTime?
+  endSite     Site?     @relation("EndSite", fields: [endSiteId], references: [id])
+  startSite   Site      @relation("StartSite", fields: [startSiteId], references: [id])
+  vehicle     Vehicle   @relation(fields: [vehicleId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+}
