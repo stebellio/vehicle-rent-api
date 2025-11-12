@@ -32,7 +32,8 @@ export class RentalController {
         body.userId,
         body.vehicleId,
         body.startSiteId,
-        body.startDate,
+        new Date(body.startDate),
+        new Date(body.endDate),
       );
 
       return {

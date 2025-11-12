@@ -10,7 +10,7 @@ export class UserService {
   async getUserWithActiveRental(id: number) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      include: { rentals: { where: { endDate: null } } },
+      include: { rentals: { where: { completedAt: null } } },
     });
 
     if (!user) {

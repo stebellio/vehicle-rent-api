@@ -4,5 +4,7 @@ Content-Type: application/json
 {
   "userId": 1,
   "vehicleId": 1,
-  "startSiteId": 1
+  "startSiteId": 1,
+  "startDate": "2025-11-11T18:30:00.000Z",
+  "endDate": "2025-11-15T18:30:00.000Z"
 }

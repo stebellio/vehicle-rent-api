@@ -20,7 +20,9 @@ export class VehicleRentalPolicy {
   }
 
   private verifyVehicleIsAvailable(vehicle: Vehicle & { rentals: Rental[] }) {
-    const isBusy = vehicle.rentals.find((rental) => rental.endDate === null);
+    const isBusy = vehicle.rentals.find(
+      (rental) => rental.completedAt === null,
+    );
 
     if (isBusy) {
       throw new VehicleBusyException(vehicle.id);

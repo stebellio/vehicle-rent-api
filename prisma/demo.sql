@@ -9,6 +9,6 @@ INSERT INTO VehicleType (name, description) VALUES ('Auto', 'Automobile'),
                                                    ('Bici', 'Bicicletta');
 
 -- Vehicles
-INSERT INTO Vehicle (name, vehicleTypeId, currentSiteId) VALUES ('Fiat Panda', 1, 1);
-INSERT INTO Vehicle (name, vehicleTypeId, currentSiteId) VALUES ('Honda Sh', 2, 2);
-INSERT INTO Vehicle (name, vehicleTypeId, currentSiteId) VALUES ('Atala', 3, 3);
+INSERT INTO Vehicle (name, vehicleTypeId, currentSiteId, dailyRate) VALUES ('Fiat Panda', 1, 1, 100);
+INSERT INTO Vehicle (name, vehicleTypeId, currentSiteId, dailyRate) VALUES ('Honda Sh', 2, 2, 50);
+INSERT INTO Vehicle (name, vehicleTypeId, currentSiteId, dailyRate) VALUES ('Atala', 3, 3, 10);

@@ -1,4 +1,5 @@
-import { IsInt, IsDateString, Min, IsOptional } from 'class-validator';
+import { IsInt, IsDateString, Min, IsOptional } from "class-validator";
+import { Type } from "class-transformer";
 
 export class CreateRentalDto {
   @IsInt()
@@ -13,7 +14,9 @@ export class CreateRentalDto {
   @Min(1)
   startSiteId: number;
 
-  @IsOptional()
   @IsDateString()
-  startDate?: Date;
+  startDate: string;
+
+  @IsDateString()
+  endDate: string;
 }

@@ -36,6 +36,7 @@ model Vehicle {
   rentals       Rental[]
   currentSite   Site        @relation("VehicleLocation", fields: [currentSiteId], references: [id])
   vehiceType    VehicleType @relation(fields: [vehicleTypeId], references: [id])
+  dailyRate     Decimal
 }
 
 model Site {
@@ -53,8 +54,9 @@ model Rental {
   startSiteId Int
   endSiteId   Int?
   startDate   DateTime
-  endDate     DateTime?
-  totalCost   Decimal?
+  endDate     DateTime
+  amount      Decimal
+  completedAt DateTime?
   createdAt   DateTime  @default(now())
   endSite     Site?     @relation("EndSite", fields: [endSiteId], references: [id])
   startSite   Site      @relation("StartSite", fields: [startSiteId], references: [id])

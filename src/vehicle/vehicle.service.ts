@@ -10,7 +10,7 @@ export class VehicleService {
   async getVehicleWithActiveRental(id: number) {
     const vehicle = await this.prisma.vehicle.findUnique({
       where: { id },
-      include: { rentals: { where: { endDate: null } } },
+      include: { rentals: { where: { completedAt: null } } },
     });
 
     if (!vehicle) {
