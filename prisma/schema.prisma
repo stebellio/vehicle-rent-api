@@ -56,7 +56,6 @@ model Rental {
   endDate     DateTime?
   totalCost   Decimal?
   createdAt   DateTime  @default(now())
-  completedAt DateTime?
   endSite     Site?     @relation("EndSite", fields: [endSiteId], references: [id])
   startSite   Site      @relation("StartSite", fields: [startSiteId], references: [id])
   vehicle     Vehicle   @relation(fields: [vehicleId], references: [id])

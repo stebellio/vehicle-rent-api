@@ -1,14 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { VehicleNotFoundException } from './exception/vehicleNotFound.exception';
+import { Injectable } from "@nestjs/common";
+import { PrismaService } from "../prisma/prisma.service";
+import { VehicleNotFoundException } from "./exception/vehicleNotFound.exception";
+import { Vehicle } from "generated/prisma";
 
 @Injectable()
 export class VehicleService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getVehicle(id: number) {
+  async getVehicleWithActiveRental(id: number) {
     const vehicle = await this.prisma.vehicle.findUnique({
       where: { id },
+      include: { rentals: { where: { endDate: null } } },
     });
 
     if (!vehicle) {
