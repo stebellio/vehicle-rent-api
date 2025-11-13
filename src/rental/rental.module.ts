@@ -7,6 +7,7 @@ import { VehicleModule } from "../vehicle/vehicle.module";
 import { VehicleRentalPolicy } from "./policy/vehicleRental.policy";
 import { UserRentalPolicy } from "./policy/userRental.policy";
 import { RentalAmountCalculatorService } from "./rentalAmountCalculator.service";
+import { NotificationModule } from "../notification/notification.module";
 
 @Module({
   controllers: [RentalController],
@@ -16,6 +17,6 @@ import { RentalAmountCalculatorService } from "./rentalAmountCalculator.service"
     UserRentalPolicy,
     RentalAmountCalculatorService,
   ],
-  imports: [PrismaModule, UserModule, VehicleModule],
+  imports: [PrismaModule, UserModule, VehicleModule, NotificationModule],
 })
 export class RentalModule {}

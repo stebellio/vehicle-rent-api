@@ -8,7 +8,7 @@ interface ILogOptions extends INotificationOptions {}
 export class LogNotificationStrategy
   implements INotificationStrategy<ILogOptions>
 {
-  sendNotification(message: string, options: ILogOptions): Promise<void> {
+  async sendNotification(message: string, options: ILogOptions): Promise<void> {
     Logger.log(message);
   }
 }

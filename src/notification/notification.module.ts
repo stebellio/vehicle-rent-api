@@ -20,7 +20,7 @@ import { EmailNotificationStrategy } from "./strategy/emailNotification.strategy
           "NOTIFICATION_STRATEGY",
           "log",
         );
-        let strategy: INotificationStrategy;
+        let strategy: INotificationStrategy<unknown>;
 
         switch (configNotificationStrategy) {
           case "email":
@@ -40,5 +40,6 @@ import { EmailNotificationStrategy } from "./strategy/emailNotification.strategy
       ],
     },
   ],
+  exports: [NotificationService],
 })
 export class NotificationModule {}
