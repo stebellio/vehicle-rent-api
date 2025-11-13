@@ -18,10 +18,15 @@ import { VehicleNotFoundException } from "../vehicle/exception/vehicleNotFound.e
 import { UserBusyException } from "./exception/userBusy.exception";
 import { VehicleBusyException } from "./exception/vehicleBusy.exception";
 import { VehicleWrongSiteException } from "./exception/vehicleWrongSite.exception";
+import { SendNotificationException } from "../notification/exception/sendNotification.exception";
+import { NotificationService } from "../notification/notification.service";
 
 @Controller("rental")
 export class RentalController {
-  constructor(private readonly rentalService: RentalService) {}
+  constructor(
+    private readonly rentalService: RentalService,
+    private readonly notificationService: NotificationService,
+  ) {}
 
   @Post()
   async create(@Body() body: CreateRentalDto) {

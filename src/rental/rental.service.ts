@@ -1,11 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { Rental, Vehicle } from "generated/prisma";
+import { Rental, User, Vehicle } from "generated/prisma";
 import { UserService } from "../user/user.service";
 import { VehicleService } from "../vehicle/vehicle.service";
 import { VehicleRentalPolicy } from "./policy/vehicleRental.policy";
 import { UserRentalPolicy } from "./policy/userRental.policy";
 import { RentalAmountCalculatorService } from "./rentalAmountCalculator.service";
+import { NotificationService } from "../notification/notification.service";
 
 @Injectable()
 export class RentalService {
@@ -16,6 +17,7 @@ export class RentalService {
     private readonly vehicleRentalPolicy: VehicleRentalPolicy,
     private readonly userRentalPolicy: UserRentalPolicy,
     private readonly rentalAmountCalculatorService: RentalAmountCalculatorService,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async createRental(
@@ -39,7 +41,7 @@ export class RentalService {
       endDate,
     );
 
-    return this.prisma.rental.create({
+    const rental = await this.prisma.rental.create({
       data: {
         userId: userId,
         vehicleId: vehicle.id,
@@ -49,5 +51,21 @@ export class RentalService {
         amount,
       },
     });
+
+    await this.notifyRentalConfirm(rental, user, vehicle);
+
+    return rental;
+  }
+
+  async notifyRentalConfirm(rental: Rental, user: User, vehicle: Vehicle) {
+    try {
+      await this.notificationService.sendRentalConfirmNotification(
+        user,
+        vehicle,
+        rental,
+      );
+    } catch (e) {
+      Logger.error("RentalService", "notifyRentalConfirm", e);
+    }
   }
 }

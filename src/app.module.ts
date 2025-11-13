@@ -6,6 +6,7 @@ import { ConfigModule } from "@nestjs/config";
 import { RentalModule } from "./rental/rental.module";
 import { UserModule } from "./user/user.module";
 import { VehicleModule } from "./vehicle/vehicle.module";
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { VehicleModule } from "./vehicle/vehicle.module";
     RentalModule,
     UserModule,
     VehicleModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
