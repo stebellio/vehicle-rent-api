@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
-import { Rental, User, Vehicle } from "generated/prisma";
+import { Rental, Vehicle } from "generated/prisma";
 import { VehicleBusyException } from "../exception/vehicleBusy.exception";
 import { VehicleWrongSiteException } from "../exception/vehicleWrongSite.exception";
 
 @Injectable()
 export class VehicleRentalPolicy {
-  verifyCanRentVehicle(
+  verifyVehicleCanBeRented(
     vehicle: Vehicle & { rentals: Rental[] },
     startSiteId: number,
   ) {

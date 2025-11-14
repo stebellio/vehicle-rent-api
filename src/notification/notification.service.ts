@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import type { INotificationStrategy } from "./strategy/notificationStrategy.interface";
-import { Rental, User, Vehicle } from "generated/prisma";
+import { Rental, Site, User, Vehicle } from "generated/prisma";
 import { DateHelper } from "../common/utils/helpers/date.helper";
 import { SendNotificationException } from "./exception/sendNotification.exception";
 import { NotificationType } from "./enum/notificationType.enum";
@@ -20,6 +20,7 @@ export class NotificationService {
     receiver: User,
     vehicle: Vehicle,
     rental: Rental,
+    site: Site,
   ) {
     const options = {
       recipient: receiver,
@@ -29,15 +30,43 @@ export class NotificationService {
     try {
       await this.strategy.sendNotification(
         `Hello ${receiver.name},
-       your rental of vehicle ${vehicle.name} has been confirmed.
+       your rental of vehicle ${vehicle.name} in ${site.name} has been confirmed
        
-       The amount to be paid is ${rental.amount}.
+       The amount to be paid is ${rental.amount.toNumber()}.
        You have to return the vehicle within the day ${DateHelper.formatDate(rental.endDate)}
        `,
         options,
       );
     } catch (e) {
-      throw new SendNotificationException(NotificationType.RENTAL_START);
+      Logger.error("NotificationService", "sendRentalConfirmNotification", e);
+      throw new SendNotificationException(NotificationType.RENTAL_START, e);
+    }
+  }
+
+  async sendRentalCompleteNotification(
+    receiver: User,
+    vehicle: Vehicle,
+    rental: Rental,
+    site: Site,
+  ) {
+    const options = {
+      recipient: receiver,
+      title: `Rental Complete`,
+    };
+
+    try {
+      await this.strategy.sendNotification(
+        `Hello ${receiver.name},
+       your rental of vehicle ${vehicle.name} has been completed in ${site.name}.
+
+       The total amount paid was ${rental.amount.toNumber()}.
+       Rental completion date: ${DateHelper.formatDate(rental.completedAt || new Date())}
+       `,
+        options,
+      );
+    } catch (e) {
+      Logger.error("NotificationService", "sendRentalCompleteNotification", e);
+      throw new SendNotificationException(NotificationType.RENTAL_END, e);
     }
   }
 }

@@ -2,33 +2,29 @@ import {
   Body,
   ConflictException,
   Controller,
+  HttpCode,
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  Patch,
   Post,
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { RentalService } from "./rental.service";
 import { CreateRentalDto } from "./requestDto/createRental.dto";
-import { UserService } from "../user/user.service";
-import e from "express";
 import { UserNotFoundException } from "../user/exception/userNotFound.exception";
-import { VehicleService } from "../vehicle/vehicle.service";
 import { VehicleNotFoundException } from "../vehicle/exception/vehicleNotFound.exception";
 import { UserBusyException } from "./exception/userBusy.exception";
 import { VehicleBusyException } from "./exception/vehicleBusy.exception";
 import { VehicleWrongSiteException } from "./exception/vehicleWrongSite.exception";
-import { SendNotificationException } from "../notification/exception/sendNotification.exception";
-import { NotificationService } from "../notification/notification.service";
+import { CompleteRentalDto } from "./requestDto/completeRental.dto";
 
 @Controller("rental")
 export class RentalController {
-  constructor(
-    private readonly rentalService: RentalService,
-    private readonly notificationService: NotificationService,
-  ) {}
+  constructor(private readonly rentalService: RentalService) {}
 
   @Post()
+  @HttpCode(201)
   async create(@Body() body: CreateRentalDto) {
     Logger.debug("RentalController", "create", JSON.stringify(body, null, 2));
 
@@ -46,6 +42,8 @@ export class RentalController {
       };
     } catch (error) {
       Logger.error("RentalController", "create", error);
+
+      //TODO Complete exception handling
 
       if (
         error instanceof UserNotFoundException ||
@@ -66,6 +64,24 @@ export class RentalController {
       }
 
       throw new InternalServerErrorException();
+    }
+  }
+
+  @Patch("/complete/:id")
+  @HttpCode(204)
+  async complete(id: number, @Body() body: CompleteRentalDto) {
+    Logger.debug("RentalController", "complete", JSON.stringify(body, null, 2));
+
+    try {
+      await this.rentalService.completeRental(
+        id,
+        new Date(body.date),
+        body.endSiteId,
+      );
+    } catch (error) {
+      //TODO Complete exception handling
+
+      Logger.error("RentalController", "complete", error);
     }
   }
 }

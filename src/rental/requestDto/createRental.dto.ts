@@ -1,5 +1,4 @@
-import { IsInt, IsDateString, Min, IsOptional } from "class-validator";
-import { Type } from "class-transformer";
+import { IsInt, IsDateString, Min } from "class-validator";
 
 export class CreateRentalDto {
   @IsInt()
