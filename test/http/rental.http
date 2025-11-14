@@ -8,3 +8,12 @@ Content-Type: application/json
   "startDate": "2025-11-11T18:30:00.000Z",
   "endDate": "2025-11-15T18:30:00.000Z"
 }
+
+###
+PATCH http://localhost:3000/rental/complete/8
+Content-Type: application/json
+
+{
+  "date": "2025-11-15",
+  "endSiteId": 2
+}

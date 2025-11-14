@@ -89,6 +89,7 @@ export class RentalService {
         where: { id: rental.id },
         data: {
           completedAt: date,
+          endSiteId,
         },
       }),
     ]);
@@ -105,15 +106,15 @@ export class RentalService {
     });
 
     if (!rental) {
-      throw new RentalNotFoundException(id);
+      throw new RentalNotFoundException();
     }
 
     if (!rental.user) {
-      throw new RentalUserNotFoundException(id);
+      throw new RentalUserNotFoundException();
     }
 
     if (!rental.vehicle) {
-      throw new RentalVehicleNotFoundException(id);
+      throw new RentalVehicleNotFoundException();
     }
 
     return rental;

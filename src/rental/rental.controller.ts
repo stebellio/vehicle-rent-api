@@ -6,6 +6,7 @@ import {
   InternalServerErrorException,
   Logger,
   NotFoundException,
+  Param,
   Patch,
   Post,
   UnprocessableEntityException,
@@ -18,6 +19,12 @@ import { UserBusyException } from "./exception/userBusy.exception";
 import { VehicleBusyException } from "./exception/vehicleBusy.exception";
 import { VehicleWrongSiteException } from "./exception/vehicleWrongSite.exception";
 import { CompleteRentalDto } from "./requestDto/completeRental.dto";
+import { RentalNotFoundException } from "./exception/rentalNotFound.exception";
+import { RentalUserNotFoundException } from "./exception/rentalUserNotFound.exception";
+import { RentalVehicleNotFoundException } from "./exception/rentalVehicleNotFound.exception";
+import { SiteNotFoundException } from "../site/exception/siteNotFound.exception";
+import { RentalAlreadyCompletedException } from "./exception/rentalAlreadyCompleted.exception";
+import { InvalidRentalCompleteDateException } from "./exception/invalidRentalCompleteDate.exception";
 
 @Controller("rental")
 export class RentalController {
@@ -69,7 +76,7 @@ export class RentalController {
 
   @Patch("/complete/:id")
   @HttpCode(204)
-  async complete(id: number, @Body() body: CompleteRentalDto) {
+  async complete(@Param("id") id: number, @Body() body: CompleteRentalDto) {
     Logger.debug("RentalController", "complete", JSON.stringify(body, null, 2));
 
     try {
@@ -79,9 +86,25 @@ export class RentalController {
         body.endSiteId,
       );
     } catch (error) {
-      //TODO Complete exception handling
+      if (
+        error instanceof RentalNotFoundException ||
+        error instanceof RentalUserNotFoundException ||
+        error instanceof RentalVehicleNotFoundException ||
+        error instanceof SiteNotFoundException
+      ) {
+        throw new NotFoundException(error.message);
+      }
+
+      if (error instanceof RentalAlreadyCompletedException) {
+        throw new ConflictException(error.message);
+      }
+
+      if (error instanceof InvalidRentalCompleteDateException) {
+        throw new UnprocessableEntityException(error.message);
+      }
 
       Logger.error("RentalController", "complete", error);
+      throw new InternalServerErrorException();
     }
   }
 }

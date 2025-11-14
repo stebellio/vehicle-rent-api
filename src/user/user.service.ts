@@ -13,7 +13,7 @@ export class UserService {
     });
 
     if (!user) {
-      throw new UserNotFoundException(id);
+      throw new UserNotFoundException();
     }
 
     return user;

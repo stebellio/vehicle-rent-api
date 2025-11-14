@@ -12,14 +12,14 @@ export class RentalPolicy {
 
   private verifyRentalIsPending(rental: Rental) {
     if (rental.completedAt) {
-      throw new RentalAlreadyCompletedException(rental.id);
+      throw new RentalAlreadyCompletedException();
     }
   }
 
   private verifyRentalIsInFuture(rental: Rental, date: Date) {
     const diff = date.getTime() - rental.startDate.getTime();
     if (diff < 0) {
-      throw new InvalidRentalCompleteDateException(date);
+      throw new InvalidRentalCompleteDateException();
     }
   }
 }

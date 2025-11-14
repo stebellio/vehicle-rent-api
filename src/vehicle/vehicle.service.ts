@@ -16,7 +16,7 @@ export class VehicleService {
     });
 
     if (!vehicle) {
-      throw new VehicleNotFoundException(id);
+      throw new VehicleNotFoundException();
     }
 
     return vehicle;

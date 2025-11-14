@@ -8,7 +8,7 @@ export class UserRentalPolicy {
     const isBusy = user.rentals.find((rental) => rental.completedAt === null);
 
     if (isBusy) {
-      throw new UserBusyException(user.id);
+      throw new UserBusyException();
     }
   }
 }

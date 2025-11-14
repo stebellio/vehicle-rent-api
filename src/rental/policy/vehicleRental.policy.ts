@@ -15,7 +15,7 @@ export class VehicleRentalPolicy {
 
   private verifyVehicleIsInSite(vehicle: Vehicle, siteId: number) {
     if (vehicle.currentSiteId !== siteId) {
-      throw new VehicleWrongSiteException(vehicle.id);
+      throw new VehicleWrongSiteException();
     }
   }
 
@@ -25,7 +25,7 @@ export class VehicleRentalPolicy {
     );
 
     if (isBusy) {
-      throw new VehicleBusyException(vehicle.id);
+      throw new VehicleBusyException();
     }
   }
 }

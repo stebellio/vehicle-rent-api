@@ -11,7 +11,7 @@ export class SiteService {
     const site = await this.prisma.site.findUnique({ where: { id } });
 
     if (!site) {
-      throw new SiteNotFoundException(id);
+      throw new SiteNotFoundException();
     }
 
     return site;
