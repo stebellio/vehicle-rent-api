@@ -1,0 +1,9 @@
+node_modules
+.idea
+generated
+prisma/dev.db
+.env
+.env.example
+README.md
+eslint.config.mjs
+test
