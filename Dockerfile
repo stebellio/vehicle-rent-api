@@ -11,6 +11,8 @@ RUN npm install
 RUN npx prisma generate && \
     npm run build
 
+RUN chmod +x docker-entrypoint.sh
+
 FROM node:22-alpine as production
 
 WORKDIR /app
@@ -24,8 +26,10 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/generated ./generated
+COPY --from=builder /app/docker-entrypoint.sh ./
 
 EXPOSE 3000
 
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["npm", "run", "start:prod"]
 
