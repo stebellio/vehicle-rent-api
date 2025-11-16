@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ###
-PATCH http://localhost:3000/rental/complete/8
+PATCH http://localhost:3000/rental/complete/1
 Content-Type: application/json
 
 {
