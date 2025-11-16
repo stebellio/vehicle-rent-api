@@ -51,7 +51,7 @@ export class RentalService {
 
     const rental = await this.prisma.rental.create({
       data: {
-        userId: userId,
+        userId: user.id,
         vehicleId: vehicle.id,
         startSiteId: site.id,
         startDate: startDate.toISOString(),
