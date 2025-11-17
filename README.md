@@ -11,4 +11,15 @@ time periods, handles rental validations, and sends notifications.
 - Node.js
 - Jest for testing
 
+## Prerequisites
+
+- Node.js (v18 or higher)
+- npm (latest version)
+- Docker and Docker Compose
+- Git
+
 ## Installation
+
+1. Clone the repository
+2. Create an.env file from .env.example
+3. Execute docker-compose up -d
